@@ -1,0 +1,33 @@
+{
+  "name": "@self-aware-journal/db",
+  "version": "1.0.0",
+  "main": "dist/db.js",
+  "types": "dist/db.d.ts",
+  "scripts": {
+    "db:gene": "npx drizzle-kit generate:pg",
+    "db:push": "npx drizzle-kit push:pg",
+    "seed:run": "npx tsx ./src/seed/index.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.30.7",
+    "drizzle-zod": "^0.5.1",
+    "pg": "^8.11.5",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/pg": "^8.11.4",
+    "@types/uuid": "^9.0.8",
+    "drizzle-kit": "^0.20.14",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "8.22.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-autofix": "^1.1.0",
+    "eslint-plugin-deprecation": "^2.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "prettier": "^3.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.0"
+  }
+}
