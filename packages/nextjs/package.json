@@ -1,5 +1,5 @@
 {
-  "name": "nextjs",
+  "name": "@self-aware-journal/nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,17 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.5",
+    "@radix-ui/themes": "^3.1.4",
     "bcrypt": "^5.1.1",
+    "chart.js": "^4.4.4",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "next": "14.2.15",
     "next-auth": "^4.24.8",
     "react": "^18",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
     "@tanstack/eslint-plugin-query": "5.8.4",
     "@tanstack/react-query-devtools": "^5.8.8",
+    "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20",
     "@types/react": "^18",

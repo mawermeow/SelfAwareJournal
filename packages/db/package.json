@@ -4,9 +4,9 @@
   "main": "dist/db.js",
   "types": "dist/db.d.ts",
   "scripts": {
-    "db:gene": "npx drizzle-kit generate:pg",
-    "db:push": "npx drizzle-kit push:pg",
-    "seed:run": "npx tsx ./src/seed/index.ts"
+    "gene": "npx drizzle-kit generate:pg",
+    "push": "npx drizzle-kit push:pg",
+    "seed": "npx tsx ./src/seed/index.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.30.7",

@@ -2,11 +2,11 @@ import { InferInsertModel, InferSelectModel, relations } from "drizzle-orm";
 import { uuid, text, pgTable, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { fieldCUDTimestamps } from "../core/schemaFields";
-import { tableAccounts } from "@/schema/table/accounts";
-import { tableTestResults } from "@/schema/table/testResults";
-import { tableJournalEntries } from "@/schema/table/journalEntries";
-import { tableFeedbacks } from "@/schema/table/feedbacks";
-import { tableSubscriptions } from "@/schema/table/subscriptions";
+import { tableAccounts } from "./accounts";
+import { tableTestResults } from "./testResults";
+import { tableJournalEntries } from "./journalEntries";
+import { tableFeedbacks } from "./feedbacks";
+import { tableSubscriptions } from "./subscriptions";
 
 export const tableUsers = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),

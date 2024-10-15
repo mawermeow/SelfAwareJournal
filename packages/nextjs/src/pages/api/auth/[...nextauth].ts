@@ -1,21 +1,33 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
 import { logger, DrizzleAdapter, generateAppleClientSecret } from "@/lib";
+import { NextApiRequest } from "next";
 import { UserModel } from "@self-aware-journal/db/src";
+
+interface Credentials {
+  email: string;
+  password: string;
+}
+
+interface AuthorizeParams {
+  credentials?: Credentials;
+  req: NextApiRequest;
+}
 
 export const authOptions: NextAuthOptions = {
   // 配置身份驗證提供者
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    AppleProvider({
-      clientId: process.env.APPLE_CLIENT_ID!,
-      clientSecret: generateAppleClientSecret(), // 使用生成的 clientSecret
-    }),
+    // GoogleProvider({
+    //   clientId: process.env.GOOGLE_CLIENT_ID!,
+    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    // }),
+    // AppleProvider({
+    //   clientId: process.env.APPLE_CLIENT_ID!,
+    //   clientSecret: generateAppleClientSecret(), // 使用生成的 clientSecret
+    // }),
     // 可選：添加憑證提供者（如電子郵件/密碼）
     CredentialsProvider({
       name: "Credentials",
@@ -24,21 +36,47 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const userModel = new UserModel(logger);
-        const user = await userModel.findFirst({
-          where: userModel.whereHelper({ email: credentials?.email }),
-        });
-
-        if (!user) {
-          throw new Error("No user found with the given email");
+        // 檢查 credentials 是否存在
+        if (!credentials) {
+          throw new Error("Credentials are required");
         }
 
-        // 您應該在這裡驗證密碼（例如使用 bcrypt）
-        // if (!verifyPassword(credentials.password, user.password)) {
-        //   throw new Error("Invalid password");
-        // }
+        // 解構 email 和 password 並進行檢查
+        const { email, password } = credentials;
+        if (!email || typeof email !== "string") {
+          throw new Error("Invalid or missing email");
+        }
+        if (!password || typeof password !== "string") {
+          throw new Error("Invalid or missing password");
+        }
 
-        return user;
+        try {
+          const userModel = new UserModel(logger);
+
+          // 根據 email 查找用戶
+          const user = await userModel.findFirst({
+            where: userModel.whereHelper({ email }),
+          });
+
+          if (!user) {
+            throw new Error("Invalid email or password");
+          }
+
+          // 比較密碼
+          const isPasswordValid = await bcrypt.compare(password, user.password ?? "");
+
+          if (!isPasswordValid) {
+            throw new Error("Invalid email or password");
+          }
+
+          // 移除密碼字段，避免重複聲明
+          const { password: userPassword, ...userWithoutPassword } = user;
+
+          return userWithoutPassword as User;
+        } catch (error) {
+          // logger.error("Authorization error:", error);
+          throw new Error("Authentication failed");
+        }
       },
     }),
     // 添加更多提供者如需要

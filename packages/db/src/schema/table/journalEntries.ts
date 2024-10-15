@@ -3,7 +3,7 @@ import { uuid, text, integer, varchar, pgTable, index } from "drizzle-orm/pg-cor
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { tableUsers } from "./users";
 import { fieldCUDTimestamps } from "../core/schemaFields";
-import { tableAIAnalyses } from "@/schema/table/aiAnalyses";
+import { tableAIAnalyses } from "./aiAnalyses";
 
 export const tableJournalEntries = pgTable(
   "journal_entries",

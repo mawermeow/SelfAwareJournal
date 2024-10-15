@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { UserModel } from "@self-aware-journal/db/src";
 import bcrypt from "bcrypt";
 import { logger } from "@/lib";
+import { UserModel } from "@self-aware-journal/db/src";
 
 const register = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {

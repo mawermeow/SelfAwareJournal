@@ -2,7 +2,7 @@ import { InferInsertModel, InferSelectModel, relations } from "drizzle-orm";
 import { uuid, text, pgTable } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { fieldCUDTimestamps } from "../core/schemaFields";
-import { tableTestResults } from "@/schema/table/testResults";
+import { tableTestResults } from "./testResults";
 
 export const tablePersonalityTests = pgTable("personality_tests", {
   id: uuid("id").primaryKey().defaultRandom(),
