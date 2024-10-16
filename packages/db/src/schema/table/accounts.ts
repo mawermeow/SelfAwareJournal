@@ -4,6 +4,10 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { tableUsers } from "./users";
 import { fieldCUDTimestamps } from "../core/schemaFields";
 
+/**
+ * # 用戶帳號 table
+ * 用途：存儲用戶的基本資訊和帳戶設定。
+ * */
 export const tableAccounts = pgTable(
   "accounts",
   {

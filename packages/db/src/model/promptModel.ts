@@ -7,6 +7,10 @@ const table = tablePrompts;
 
 type T = typeof table extends PgTableWithColumns<infer T> ? T : never;
 
+/**
+ * # 引導提示
+ * 用途：存儲不同類型的引導提示，用於引導用戶思考或日記寫作。
+ * */
 export class PromptModel extends CommonModel<T> {
   static tableName = getTableName(table);
 

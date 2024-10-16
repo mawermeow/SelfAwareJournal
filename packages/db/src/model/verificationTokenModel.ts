@@ -7,6 +7,10 @@ const table = tableVerificationTokens;
 
 type T = typeof table extends PgTableWithColumns<infer T> ? T : never;
 
+/**
+ * # 用戶電子郵件驗證
+ * 用途：存儲用戶的電子郵件驗證標記。
+ * */
 export class VerificationTokenModel extends CommonModel<T> {
   static tableName = getTableName(table);
 

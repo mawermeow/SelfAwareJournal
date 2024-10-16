@@ -7,6 +7,10 @@ const table = tableJournalEntries;
 
 type T = typeof table extends PgTableWithColumns<infer T> ? T : never;
 
+/**
+ * # 日記條目
+ * 用途：存儲用戶的意識流日記內容。
+ * */
 export class JournalEntryModel extends CommonModel<T> {
   static tableName = getTableName(table);
 

@@ -4,6 +4,11 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { tableUsers } from "./users";
 import { fieldCUDTimestamps } from "../core/schemaFields";
 
+/**
+ * # Session table
+ * 用途：儲存用戶的 session 資訊。
+ * @deprecated 目前將 session 資訊存儲在 cookies 中，此 table 暫時不使用。
+ * */
 export const tableSessions = pgTable(
   "sessions",
   {
@@ -12,7 +17,7 @@ export const tableSessions = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => tableUsers.id, { onDelete: "cascade" }),
-    expires: timestamp("expires", { mode: "string" }).notNull(),
+    expiredAt: timestamp("expired_at", { mode: "string" }).notNull(),
     ...fieldCUDTimestamps,
   },
   (table) => {

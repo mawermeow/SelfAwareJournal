@@ -1,20 +1,25 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
-
 interface JournalEditorProps {
+  hasSucceeded: boolean;
   onSave: (content: string) => void;
 }
 
-export const JournalEditor: FC<JournalEditorProps> = ({ onSave }) => {
+export const JournalEditor: FC<JournalEditorProps> = ({ hasSucceeded, onSave }) => {
   const [content, setContent] = useState("");
+
+  useEffect(() => {
+    if (hasSucceeded) {
+      setContent("");
+    }
+  }, [hasSucceeded]);
 
   const handleSubmit = () => {
     if (content.trim() === "") return;
     onSave(content);
-    setContent("");
   };
 
   return (

@@ -7,6 +7,10 @@ const table = tableSubscriptions;
 
 type T = typeof table extends PgTableWithColumns<infer T> ? T : never;
 
+/**
+ * # 訂閱與計劃
+ * 用途：管理用戶的訂閱資訊和計劃。
+ * */
 export class SubscriptionModel extends CommonModel<T> {
   static tableName = getTableName(table);
 

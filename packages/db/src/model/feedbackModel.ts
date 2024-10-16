@@ -7,6 +7,10 @@ const table = tableFeedbacks;
 
 type T = typeof table extends PgTableWithColumns<infer T> ? T : never;
 
+/**
+ * # 用戶反饋
+ * 用途：收集用戶對平台的反饋與建議。
+ * */
 export class FeedbackModel extends CommonModel<T> {
   static tableName = getTableName(table);
 

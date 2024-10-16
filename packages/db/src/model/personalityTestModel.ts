@@ -7,6 +7,10 @@ const table = tablePersonalityTests;
 
 type T = typeof table extends PgTableWithColumns<infer T> ? T : never;
 
+/**
+ * # 性格測驗
+ * 用途：存儲不同類型的性格測驗資訊。
+ * */
 export class PersonalityTestModel extends CommonModel<T> {
   static tableName = getTableName(table);
 

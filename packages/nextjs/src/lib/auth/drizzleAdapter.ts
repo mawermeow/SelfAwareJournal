@@ -1,13 +1,7 @@
-import {
-  Adapter,
-  AdapterUser,
-  AdapterAccount,
-  AdapterSession,
-  VerificationToken,
-} from "next-auth/adapters";
+// lib/auth/drizzleAdapter.ts
+import { Adapter, AdapterUser, AdapterAccount, VerificationToken } from "next-auth/adapters";
 import {
   AccountModel,
-  SessionModel,
   UserModel,
   VerificationTokenModel,
   regularizeDatetime,
@@ -21,11 +15,9 @@ interface AdapterOptions {
 export function DrizzleAdapter({ logger }: AdapterOptions): Adapter {
   const userModel = new UserModel(logger);
   const accountModel = new AccountModel(logger);
-  const sessionModel = new SessionModel(logger);
   const verificationTokenModel = new VerificationTokenModel(logger);
 
   return {
-    // 創建新用戶
     async createUser(user: AdapterUser): Promise<AdapterUser> {
       const newUsers = await userModel.create({
         email: user.email!,
@@ -34,7 +26,7 @@ export function DrizzleAdapter({ logger }: AdapterOptions): Adapter {
         emailVerified: regularizeDatetime(user.emailVerified) || null,
       });
 
-      const newUser = newUsers[0]; // 假設 create 返回一個數組
+      const newUser = newUsers[0];
 
       return {
         id: newUser.id,
@@ -45,7 +37,6 @@ export function DrizzleAdapter({ logger }: AdapterOptions): Adapter {
       };
     },
 
-    // 讀取用戶通過 ID
     async getUser(id: string): Promise<AdapterUser | null> {
       const user = await userModel.findFirst({
         where: userModel.whereHelper({ id }),
@@ -60,7 +51,6 @@ export function DrizzleAdapter({ logger }: AdapterOptions): Adapter {
       };
     },
 
-    // 讀取用戶通過電子郵件
     async getUserByEmail(email: string): Promise<AdapterUser | null> {
       const user = await userModel.findFirst({
         where: userModel.whereHelper({ email }),
@@ -75,7 +65,6 @@ export function DrizzleAdapter({ logger }: AdapterOptions): Adapter {
       };
     },
 
-    // 更新用戶
     async updateUser(user: Partial<AdapterUser> & { id: string }): Promise<AdapterUser> {
       await userModel.modify(
         { id: user.id },
@@ -102,12 +91,12 @@ export function DrizzleAdapter({ logger }: AdapterOptions): Adapter {
       };
     },
 
-    // 刪除用戶
     async deleteUser(id: string): Promise<void> {
-      await userModel.eradicate({ id });
+      // Soft delete
+      await userModel.modify({ id }, { deletedAt: regularizeDatetime() });
     },
 
-    // 創建帳號（如 OAuth 提供者）
+    // Link account (e.g., OAuth providers)
     async linkAccount(account: AdapterAccount): Promise<void> {
       await accountModel.create({
         userId: account.userId,
@@ -124,7 +113,6 @@ export function DrizzleAdapter({ logger }: AdapterOptions): Adapter {
       });
     },
 
-    // 查找帳號
     async getUserByAccount({
       provider,
       providerAccountId,
@@ -166,86 +154,19 @@ export function DrizzleAdapter({ logger }: AdapterOptions): Adapter {
       });
     },
 
-    // 創建會話
-    async createSession(session: AdapterSession): Promise<AdapterSession> {
-      const newSession = await sessionModel.create({
-        sessionToken: session.sessionToken,
-        userId: session.userId,
-        expires: regularizeDatetime(session.expires),
-      });
-      return {
-        sessionToken: newSession[0].sessionToken,
-        userId: newSession[0].userId,
-        expires: new Date(newSession[0].expires),
-      };
-    },
-
-    // 讀取會話通過會話令牌
-    async getSessionAndUser(
-      sessionToken: string
-    ): Promise<{ session: AdapterSession; user: AdapterUser } | null> {
-      const session = await sessionModel.findFirst({
-        where: sessionModel.whereHelper({ sessionToken: sessionToken }),
-        with: { user: true },
-      });
-
-      if (!session || !session.user) return null;
-
-      const user = session.user;
-      return {
-        session: {
-          sessionToken: session.sessionToken,
-          userId: session.userId,
-          expires: new Date(session.expires),
-        },
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          image: user.image,
-          emailVerified: user.emailVerified ? new Date(user.emailVerified) : null,
-        },
-      };
-    },
-
-    // 更新會話
-    async updateSession(
-      session: Partial<AdapterSession> & { sessionToken: string }
-    ): Promise<AdapterSession> {
-      const [updatedSession] = await sessionModel.modify(
-        { sessionToken: session.sessionToken },
-        {
-          expires: regularizeDatetime(session.expires),
-          userId: session.userId,
-        }
-      );
-
-      if (!updatedSession) {
-        throw new Error("Session not found");
-      }
-      return {
-        sessionToken: updatedSession.sessionToken,
-        userId: updatedSession.userId,
-        expires: new Date(updatedSession.expires),
-      };
-    },
-
-    // 刪除會話
-    async deleteSession(sessionToken: string): Promise<void> {
-      await sessionModel.eradicate({ sessionToken: sessionToken });
-    },
-
-    // 創建驗證令牌
+    // 用於做電子郵件驗證
+    // TODO 這個方法應該在使用者註冊時被調用，尚未確認
     async createVerificationToken(token: VerificationToken): Promise<VerificationToken> {
       await verificationTokenModel.create({
         identifier: token.identifier,
         token: token.token,
-        expires: regularizeDatetime(token.expires),
+        expiredAt: regularizeDatetime(token.expires),
       });
       return token;
     },
 
-    // 讀取並使用驗證令牌
+    // 用於做電子郵件驗證
+    // TODO 這個方法應該在使用者點擊驗證連結時被調用，尚未確認
     async useVerificationToken({
       identifier,
       token,
@@ -259,13 +180,36 @@ export function DrizzleAdapter({ logger }: AdapterOptions): Adapter {
 
       if (!existingToken) return null;
 
-      // 刪除令牌
+      // Delete token
       await verificationTokenModel.eradicate({
         identifier,
         token,
       });
 
-      return { ...existingToken, expires: new Date(existingToken.expires) };
+      return { ...existingToken, expires: new Date(existingToken.expiredAt) };
+    },
+
+    // The following session methods are not needed when using JWT sessions.
+    // Implement them as no-ops or remove them.
+
+    // createSession: Not needed for JWT sessions
+    async createSession(): Promise<any> {
+      // No operation needed
+    },
+
+    // getSessionAndUser: Not needed for JWT sessions
+    async getSessionAndUser(): Promise<any> {
+      // No operation needed
+    },
+
+    // updateSession: Not needed for JWT sessions
+    async updateSession(): Promise<any> {
+      // No operation needed
+    },
+
+    // deleteSession: Not needed for JWT sessions
+    async deleteSession(): Promise<any> {
+      // No operation needed
     },
   };
 }

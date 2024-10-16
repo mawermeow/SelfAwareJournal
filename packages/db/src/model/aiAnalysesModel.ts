@@ -7,6 +7,10 @@ const table = tableAIAnalyses;
 
 type T = typeof table extends PgTableWithColumns<infer T> ? T : never;
 
+/**
+ * # AI分析
+ * 用途：存儲 AI 對日記內容的分析結果。
+ * */
 export class AIAnalyseModel extends CommonModel<T> {
   static tableName = getTableName(table);
 

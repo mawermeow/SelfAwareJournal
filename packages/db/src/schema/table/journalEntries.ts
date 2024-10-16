@@ -5,6 +5,10 @@ import { tableUsers } from "./users";
 import { fieldCUDTimestamps } from "../core/schemaFields";
 import { tableAIAnalyses } from "./aiAnalyses";
 
+/**
+ * # 日記條目 table
+ * 用途：存儲用戶的意識流日記內容。
+ * */
 export const tableJournalEntries = pgTable(
   "journal_entries",
   {
@@ -12,9 +16,9 @@ export const tableJournalEntries = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => tableUsers.id, { onDelete: "cascade" }),
-    content: text("content").notNull(),
-    emotion_score: integer("emotion_score"),
-    mood: varchar("mood", { length: 50 }),
+    content: text("content").notNull(), // 日記內容
+    emotion_score: integer("emotion_score"), // 情緒評分（例如1-10）
+    mood: varchar("mood", { length: 50 }), // 心情描述
     ...fieldCUDTimestamps,
   },
   (table) => {

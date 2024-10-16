@@ -2,12 +2,16 @@ import { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import { text, pgTable, timestamp, index } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
+/**
+ * # 用戶電子郵件驗證 table
+ * 用途：存儲用戶的電子郵件驗證標記。
+ * */
 export const tableVerificationTokens = pgTable(
   "verification_tokens",
   {
-    identifier: text("identifier").notNull(),
+    identifier: text("identifier").notNull(), // 驗證標記識別符 (如電子郵件)
     token: text("token").notNull(),
-    expires: timestamp("expires", { mode: "string" }).notNull(),
+    expiredAt: timestamp("expired_at", { mode: "string" }).notNull(), // 過期時間
   },
   (table) => {
     return {

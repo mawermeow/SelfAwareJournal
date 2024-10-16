@@ -4,6 +4,10 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { tableUsers } from "./users";
 import { tablePersonalityTests } from "./personalityTests";
 
+/**
+ * # 測驗結果 table
+ * 用途：存儲用戶的測驗結果。
+ * */
 export const tableTestResults = pgTable(
   "test_results",
   {
@@ -13,10 +17,10 @@ export const tableTestResults = pgTable(
       .references(() => tableUsers.id, { onDelete: "cascade" }),
     testId: uuid("test_id")
       .notNull()
-      .references(() => tablePersonalityTests.id, { onDelete: "cascade" }),
-    result: text("result").notNull(),
-    details: jsonb("details").default("{}"),
-    takenAt: timestamp("taken_at", { mode: "string" }).defaultNow().notNull(),
+      .references(() => tablePersonalityTests.id, { onDelete: "cascade" }), // 關聯的測驗ID
+    result: text("result").notNull(), // 測驗結果
+    details: jsonb("details").default("{}"), // 詳細結果或附加資料
+    takenAt: timestamp("taken_at", { mode: "string" }).defaultNow().notNull(), // 測驗完成時間
   },
   (table) => {
     return {

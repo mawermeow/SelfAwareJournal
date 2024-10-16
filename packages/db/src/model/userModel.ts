@@ -7,6 +7,10 @@ const table = tableUsers;
 
 type T = typeof table extends PgTableWithColumns<infer T> ? T : never;
 
+/**
+ * # 用戶
+ * 用途：存儲用戶的基本資訊和帳戶設定。
+ * */
 export class UserModel extends CommonModel<T> {
   static tableName = getTableName(table);
 

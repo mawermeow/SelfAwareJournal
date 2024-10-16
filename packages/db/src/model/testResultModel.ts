@@ -7,6 +7,10 @@ const table = tableTestResults;
 
 type T = typeof table extends PgTableWithColumns<infer T> ? T : never;
 
+/**
+ * # 測驗結果
+ * 用途：存儲用戶的測驗結果。
+ * */
 export class TestResultModel extends CommonModel<T> {
   static tableName = getTableName(table);
 

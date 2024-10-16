@@ -1,3 +1,5 @@
+// pages/api/auth/[...nextauth].ts
+
 import NextAuth, { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import AppleProvider from "next-auth/providers/apple";
@@ -53,18 +55,14 @@ export const authOptions: NextAuthOptions = {
         try {
           const userModel = new UserModel(logger);
 
-          // 根據 email 查找用戶
           const user = await userModel.findFirst({
             where: userModel.whereHelper({ email }),
           });
-
           if (!user) {
             throw new Error("Invalid email or password");
           }
 
-          // 比較密碼
           const isPasswordValid = await bcrypt.compare(password, user.password ?? "");
-
           if (!isPasswordValid) {
             throw new Error("Invalid email or password");
           }
@@ -74,15 +72,13 @@ export const authOptions: NextAuthOptions = {
 
           return userWithoutPassword as User;
         } catch (error) {
-          // logger.error("Authorization error:", error);
           throw new Error("Authentication failed");
         }
       },
     }),
-    // 添加更多提供者如需要
   ],
 
-  // 使用自定義 Adapter
+  // 使用自定義 Adapter，它會在使用 OAuth providers 進行身份驗證時被調用
   adapter: DrizzleAdapter({ logger }),
 
   // 認證頁面（可選）
@@ -96,6 +92,10 @@ export const authOptions: NextAuthOptions = {
 
   // 回調函數（可選）
   callbacks: {
+    async signIn({ user }) {
+      // 成功登入後返回 true，讓 NextAuth 自行處理 cookies
+      return true;
+    },
     async session({ session, user }) {
       if (user && session.user) {
         session.user.id = user.id;
@@ -113,10 +113,11 @@ export const authOptions: NextAuthOptions = {
     },
   },
 
-  // 其他配置選項
   session: {
-    strategy: "jwt", // 使用 JWT 策略
+    // strategy: "database", // 將 session 存儲在資料庫中，每次讀取時都要讀/寫資料庫
+    strategy: "jwt", // 將 session 存儲在 JWT 中，每次讀取時只需解碼 JWT
   },
+  secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
 };
 

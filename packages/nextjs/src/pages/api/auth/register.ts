@@ -1,3 +1,5 @@
+// pages/api/auth/register.ts
+
 import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
 import { logger } from "@/lib";

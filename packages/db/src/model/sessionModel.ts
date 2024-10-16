@@ -7,6 +7,11 @@ const table = tableSessions;
 
 type T = typeof table extends PgTableWithColumns<infer T> ? T : never;
 
+/**
+ * # Session
+ * 用途：儲存用戶的 session 資訊。
+ * @deprecated 目前將 session 資訊存儲在 cookies 中，此 model 暫時不使用。
+ * */
 export class SessionModel extends CommonModel<T> {
   static tableName = getTableName(table);
 

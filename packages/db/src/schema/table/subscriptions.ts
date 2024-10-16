@@ -11,6 +11,10 @@ export const subscriptionStatusPgEnum = pgEnum("subscriptions_status", [
   "canceled",
 ]);
 
+/**
+ * # 訂閱與計劃 table
+ * 用途：管理用戶的訂閱資訊和計劃。
+ * */
 export const tableSubscriptions = pgTable(
   "subscriptions",
   {
@@ -18,10 +22,10 @@ export const tableSubscriptions = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => tableUsers.id, { onDelete: "cascade" }),
-    planName: text("plan_name").notNull(),
-    status: subscriptionStatusPgEnum("status").notNull(),
-    startDate: date("start_date").notNull(),
-    endDate: date("end_date"),
+    planName: text("plan_name").notNull(), // 計劃名稱（如 免費、專業）
+    status: subscriptionStatusPgEnum("status").notNull(), // 訂閱狀態（如 active, inactive, canceled）
+    startDate: date("start_date").notNull(), // 訂閱開始日期
+    endDate: date("end_date"), // 訂閱結束日期
     ...fieldCUDTimestamps,
   },
   (table) => {
