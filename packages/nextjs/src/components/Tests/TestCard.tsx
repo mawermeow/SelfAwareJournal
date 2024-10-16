@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FC } from "react";
+import { PersonalityTestsSelect } from "@self-aware-journal/db/src";
 
 interface Test {
   id: string;
@@ -8,7 +9,7 @@ interface Test {
 }
 
 interface TestCardProps {
-  test: Test;
+  test: PersonalityTestsSelect;
 }
 
 export const TestCard: FC<TestCardProps> = ({ test }) => {

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { TestCard } from "@/components/Tests/TestCard";
 import { Loader } from "@/components/ui/Loader";
+import usePersonalityTests from "@/server-action-hooks/usePersonalityTests";
+import { PersonalityTestsSelect } from "@self-aware-journal/db/src";
 
 interface Test {
   id: string;
@@ -10,41 +12,16 @@ interface Test {
   description: string;
 }
 
-const fakeTests: Test[] = [
-  {
-    id: "1",
-    name: "心理測驗 1",
-    description: "這是一個心理測驗的描述。",
-  },
-  {
-    id: "2",
-    name: "心理測驗 2",
-    description: "這是一個心理測驗的描述。",
-  },
-  {
-    id: "3",
-    name: "心理測驗 3",
-    description: "這是一個心理測驗的描述。",
-  },
-];
-
 export default function TestsPage() {
-  const [tests, setTests] = useState<Test[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [tests, setTests] = useState<PersonalityTestsSelect[]>([]);
+  const { data, isLoading, refetch, isFetching } = usePersonalityTests({ limit: 10 });
 
   useEffect(() => {
-    // 假設有 API 來獲取測驗列表
-    // fetch("/api/tests")
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setTests(data);
-    //     setLoading(false);
-    //   });
-    setTests(fakeTests);
-    setLoading(false);
-  }, []);
+    if (!data || !data.data) return;
+    setTests(data.data);
+  }, [data]);
 
-  if (loading) return <Loader />;
+  if (isLoading) return <Loader />;
 
   return (
     <div className="p-6 bg-gray-100">
