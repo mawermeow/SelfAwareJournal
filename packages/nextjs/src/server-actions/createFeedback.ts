@@ -1,17 +1,17 @@
-// server-actions/submitFeedback.ts
+// server-actions/createFeedback.ts
 "use server";
 
 import { logger, actionClient, ActionError } from "@/lib";
 import { schemaFeedbacksInsert, FeedbackModel } from "@self-aware-journal/db/src";
 
-const submitFeedbackSchema = schemaFeedbacksInsert.required().pick({
+const schema = schemaFeedbacksInsert.required().pick({
   feedbackType: true,
   message: true,
 });
 
-export const submitFeedbackAction = actionClient
-  .schema(submitFeedbackSchema)
-  .action(async ({ ctx: { userId }, parsedInput: { feedbackType, message } }) => {
+export const createFeedbackAction = actionClient
+  .schema(schema)
+  .action(async ({ parsedInput: { feedbackType, message }, ctx: { userId } }) => {
     try {
       const feedbackModel = new FeedbackModel(logger);
       const newFeedback = await feedbackModel.create({

@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const MINUTE = 1000 * 60;
 
@@ -26,6 +27,10 @@ export const queryClient = new QueryClient({
 const Provider = ({ children }: { children: ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools
+        buttonPosition={"bottom-left"}
+        initialIsOpen={false}
+      />
       <SessionProvider>{children}</SessionProvider>
     </QueryClientProvider>
   );

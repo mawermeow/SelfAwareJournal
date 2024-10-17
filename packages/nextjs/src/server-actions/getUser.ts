@@ -4,13 +4,13 @@
 import { logger, actionClient, ActionError } from "@/lib";
 import { schemaUsersInsert, UserModel } from "@self-aware-journal/db/src";
 
-const getUserSchema = schemaUsersInsert.required().pick({
+const schema = schemaUsersInsert.required().pick({
   id: true,
 });
 
 export const getUserAction = actionClient
-  .schema(getUserSchema)
-  .action(async ({ parsedInput: { id } }) => {
+  .schema(schema)
+  .action(async ({ parsedInput: { id }, ctx }) => {
     try {
       const userModel = new UserModel(logger);
       const user = await userModel.findFirst({

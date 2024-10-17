@@ -4,13 +4,13 @@
 import { logger, actionClient, ActionError } from "@/lib";
 import { schemaAIAnalysesSelect, AIAnalyseModel } from "@self-aware-journal/db/src";
 
-const getAIAnalysisSchema = schemaAIAnalysesSelect.required().pick({
+const schema = schemaAIAnalysesSelect.required().pick({
   journalId: true,
 });
 
 export const getAIAnalysisAction = actionClient
-  .schema(getAIAnalysisSchema)
-  .action(async ({ ctx, parsedInput: { journalId } }) => {
+  .schema(schema)
+  .action(async ({ parsedInput: { journalId }, ctx }) => {
     try {
       const aiAnalysisModel = new AIAnalyseModel(logger);
       const analyses = await aiAnalysisModel.findMany({

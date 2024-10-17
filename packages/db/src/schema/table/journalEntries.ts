@@ -17,8 +17,8 @@ export const tableJournalEntries = pgTable(
       .notNull()
       .references(() => tableUsers.id, { onDelete: "cascade" }),
     content: text("content").notNull(), // 日記內容
-    emotion_score: integer("emotion_score"), // 情緒評分（例如1-10）
-    mood: varchar("mood", { length: 50 }), // 心情描述
+    emotionScore: integer("emotion_score").notNull().default(20), // 情緒評分（例如1-10）
+    mood: varchar("mood", { length: 50 }).notNull().default("沒什麼想法"), // 心情描述
     ...fieldCUDTimestamps,
   },
   (table) => {

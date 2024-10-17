@@ -1,24 +1,24 @@
-// server-actions/submitJournalEntry.ts
+// server-actions/createJournalEntry.ts
 "use server";
 
 import { logger, actionClient, ActionError } from "@/lib";
 import { schemaJournalEntriesInsert, JournalEntryModel } from "@self-aware-journal/db/src";
 
-const submitJournalEntrySchema = schemaJournalEntriesInsert.required().pick({
+const schema = schemaJournalEntriesInsert.required().pick({
   content: true,
-  emotion_score: true,
+  emotionScore: true,
   mood: true,
 });
 
-export const submitJournalEntryAction = actionClient
-  .schema(submitJournalEntrySchema)
-  .action(async ({ ctx: { userId }, parsedInput: { content, emotion_score, mood } }) => {
+export const createJournalEntryAction = actionClient
+  .schema(schema)
+  .action(async ({ parsedInput: { content, emotionScore, mood }, ctx: { userId } }) => {
     try {
       const journalModel = new JournalEntryModel(logger);
       const newEntry = await journalModel.create({
         userId,
         content,
-        emotion_score,
+        emotionScore,
         mood,
       });
 

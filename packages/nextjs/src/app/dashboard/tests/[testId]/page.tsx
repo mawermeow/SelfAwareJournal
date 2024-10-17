@@ -20,7 +20,7 @@ interface Test {
 }
 const createFakeTest = (id: string): Test => ({
   id,
-  name: `心理測驗 ${id}`,
+  name: "心理測驗",
   questions: [
     {
       id: "1",

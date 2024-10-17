@@ -20,11 +20,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex max-h-screen">
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <DashboardHeader />
-        {children}
+        <div className="w-full flex-1 overflow-y-scroll">{children}</div>
       </div>
     </div>
   );

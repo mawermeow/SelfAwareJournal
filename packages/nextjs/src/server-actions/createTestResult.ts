@@ -1,4 +1,4 @@
-// server-actions/submitPersonalityTest.ts
+// server-actions/createTestResult.ts
 "use server";
 
 import { logger, actionClient, ActionError } from "@/lib";
@@ -8,16 +8,16 @@ import {
   TestResultModel,
 } from "@self-aware-journal/db/src";
 
-const submitPersonalityTestSchema = schemaTestResultsInsert.required().pick({
+const schema = schemaTestResultsInsert.required().pick({
   testId: true,
   result: true,
   details: true,
   takenAt: true,
 });
 
-export const submitPersonalityTestAction = actionClient
-  .schema(submitPersonalityTestSchema)
-  .action(async ({ ctx: { userId }, parsedInput: { testId, result, details, takenAt } }) => {
+export const createTestResultAction = actionClient
+  .schema(schema)
+  .action(async ({ parsedInput: { testId, result, details, takenAt }, ctx: { userId } }) => {
     try {
       const testResultsModel = new TestResultModel(logger);
       const newTestResult = await testResultsModel.create({
