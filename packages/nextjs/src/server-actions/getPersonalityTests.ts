@@ -11,6 +11,9 @@ const schema = z.object({
 });
 export const getPersonalityTestsAction = actionClient
   .schema(schema)
+  .metadata({
+    actionName: "getPersonalityTests",
+  })
   .action(async ({ parsedInput: { limit, offset }, ctx }) => {
     try {
       const personalityTestModel = new PersonalityTestModel(logger);

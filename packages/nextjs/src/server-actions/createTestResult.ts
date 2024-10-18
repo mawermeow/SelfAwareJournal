@@ -17,6 +17,9 @@ const schema = schemaTestResultsInsert.required().pick({
 
 export const createTestResultAction = actionClient
   .schema(schema)
+  .metadata({
+    actionName: "createTestResult",
+  })
   .action(async ({ parsedInput: { testId, result, details, takenAt }, ctx: { userId } }) => {
     try {
       const testResultsModel = new TestResultModel(logger);

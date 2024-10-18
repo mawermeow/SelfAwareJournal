@@ -10,6 +10,9 @@ const schema = schemaUsersInsert.required().pick({
 
 export const getUserAction = actionClient
   .schema(schema)
+  .metadata({
+    actionName: "getUser",
+  })
   .action(async ({ parsedInput: { id }, ctx }) => {
     try {
       const userModel = new UserModel(logger);

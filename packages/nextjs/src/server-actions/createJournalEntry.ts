@@ -12,6 +12,9 @@ const schema = schemaJournalEntriesInsert.required().pick({
 
 export const createJournalEntryAction = actionClient
   .schema(schema)
+  .metadata({
+    actionName: "createJournalEntry",
+  })
   .action(async ({ parsedInput: { content, emotionScore, mood }, ctx: { userId } }) => {
     try {
       const journalModel = new JournalEntryModel(logger);

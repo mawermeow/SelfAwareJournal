@@ -10,6 +10,9 @@ const schema = schemaAIAnalysesSelect.required().pick({
 
 export const getAIAnalysisAction = actionClient
   .schema(schema)
+  .metadata({
+    actionName: "getAIAnalysis",
+  })
   .action(async ({ parsedInput: { journalId }, ctx }) => {
     try {
       const aiAnalysisModel = new AIAnalyseModel(logger);

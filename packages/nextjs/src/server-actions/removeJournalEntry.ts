@@ -14,6 +14,9 @@ const schema = schemaJournalEntriesInsert.required().pick({
 
 export const removeJournalEntryAction = actionClient
   .schema(schema)
+  .metadata({
+    actionName: "removeJournalEntry",
+  })
   .action(async ({ parsedInput: { id }, ctx: { userId } }) => {
     try {
       const journalModel = new JournalEntryModel(logger);

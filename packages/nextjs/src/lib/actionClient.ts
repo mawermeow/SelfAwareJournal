@@ -2,6 +2,7 @@
 import { createSafeActionClient } from "next-safe-action";
 import { decode } from "next-auth/jwt";
 import { cookies } from "next/headers";
+import { z } from "zod";
 
 export class ActionError extends Error {
   constructor(message: string) {
@@ -11,8 +12,13 @@ export class ActionError extends Error {
 }
 
 export const actionClient = createSafeActionClient({
-  handleServerError: (e) => {
-    console.error("Action error:", e.message);
+  defineMetadataSchema() {
+    return z.object({
+      actionName: z.string(),
+    });
+  },
+  handleServerError: (e, { metadata }) => {
+    console.error(`Action error in ${metadata.actionName}:`, e.message);
     return {
       errorMessage: e.message,
     };

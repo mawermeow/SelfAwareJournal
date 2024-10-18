@@ -11,6 +11,9 @@ const schema = schemaFeedbacksInsert.required().pick({
 
 export const createFeedbackAction = actionClient
   .schema(schema)
+  .metadata({
+    actionName: "createFeedback",
+  })
   .action(async ({ parsedInput: { feedbackType, message }, ctx: { userId } }) => {
     try {
       const feedbackModel = new FeedbackModel(logger);

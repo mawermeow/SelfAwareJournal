@@ -1,3 +1,4 @@
+// components/Journal/JournalList.tsx
 "use client";
 
 import Link from "next/link";
@@ -46,7 +47,7 @@ export const Sidebar = () => {
             href={item.href}
           >
             <div
-              className={`flex items-center px-4 py-2 mt-2 text-gray-700 hover:bg-gray-200 ${
+              className={`flex items-center px-4 py-3 text-gray-700 hover:bg-gray-200 ${
                 pathname === item.href ? "bg-gray-200 font-semibold" : ""
               }`}
             >

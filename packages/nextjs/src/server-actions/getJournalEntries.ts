@@ -12,6 +12,9 @@ const schema = z.object({
 
 export const getJournalEntriesAction = actionClient
   .schema(schema)
+  .metadata({
+    actionName: "getJournalEntries",
+  })
   .action(async ({ parsedInput: { limit, offset }, ctx: { userId } }) => {
     try {
       const journalModel = new JournalEntryModel(logger);
