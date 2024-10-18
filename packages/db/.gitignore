@@ -15,3 +15,6 @@ yarn-error.log*
 /docker-data/
 
 .env
+
+# 前期開發階段暫時不跟蹤此檔案
+/src/migration
