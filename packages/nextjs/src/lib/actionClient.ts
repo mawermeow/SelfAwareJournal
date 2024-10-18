@@ -1,4 +1,5 @@
 // lib/safeActionClient.ts
+import config from "@/config";
 import { createSafeActionClient } from "next-safe-action";
 import { decode } from "next-auth/jwt";
 import { cookies } from "next/headers";
@@ -32,7 +33,7 @@ export const actionClient = createSafeActionClient({
     throw new ActionError("Unauthorized: Session token not found");
   }
 
-  const secret = process.env.NEXTAUTH_SECRET;
+  const secret = config.nextAuth.secret;
   if (!secret) {
     throw new Error("NEXTAUTH_SECRET not set");
   }

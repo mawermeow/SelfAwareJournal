@@ -11,4 +11,7 @@ yarn-error.log*
 .vscode/*
 .idea/*
 
+# docker
+/docker-data/
+
 .env

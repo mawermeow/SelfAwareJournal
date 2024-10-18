@@ -75,23 +75,24 @@ export default function LoginPage() {
             {loading ? "登入中..." : "登入"}
           </Button>
         </form>
-        <div className="mt-4 text-center">
-          <p>或使用以下方式登入：</p>
-          <div className="flex justify-center space-x-4 mt-2">
-            <Button
-              variant="oauth"
-              onClick={() => signIn("google")}
-            >
-              Google
-            </Button>
-            <Button
-              variant="oauth"
-              onClick={() => signIn("apple")}
-            >
-              Apple
-            </Button>
-          </div>
-        </div>
+        {/* TODO 確認應用場景、加入 Apple 和 Google 開發者計畫後再開啟 */}
+        {/*<div className="mt-4 text-center">*/}
+        {/*  <p>或使用以下方式登入：</p>*/}
+        {/*  <div className="flex justify-center space-x-4 mt-2">*/}
+        {/*    <Button*/}
+        {/*      variant="oauth"*/}
+        {/*      onClick={() => signIn("google")}*/}
+        {/*    >*/}
+        {/*      Google*/}
+        {/*    </Button>*/}
+        {/*    <Button*/}
+        {/*      variant="oauth"*/}
+        {/*      onClick={() => signIn("apple")}*/}
+        {/*    >*/}
+        {/*      Apple*/}
+        {/*    </Button>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
         <div className="mt-6 text-center">
           <p>
             還沒有帳號？{" "}

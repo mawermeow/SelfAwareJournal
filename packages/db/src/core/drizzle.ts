@@ -6,7 +6,7 @@ import { Logger } from "drizzle-orm";
 
 const pool = new Pool({
   host: config.db.host,
-  port: 5432,
+  port: config.db.port ? Number(config.db.port) : 5432,
   user: config.db.user,
   password: config.db.password,
   database: config.db.database,

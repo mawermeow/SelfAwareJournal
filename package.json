@@ -4,8 +4,12 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "db:docker-start": "yarn workspace @self-aware-journal/db docker-start",
     "db:gene": "yarn workspace @self-aware-journal/db gene",
     "db:push": "yarn workspace @self-aware-journal/db push",
+    "db:seed": "yarn workspace @self-aware-journal/db seed",
+    "db:docker-stop": "yarn workspace @self-aware-journal/db docker-stop",
+    "db:docker-clear": "yarn workspace @self-aware-journal/db docker-clear",
     "nextjs:dev": "yarn workspace @self-aware-journal/nextjs dev"
   },
   "dependencies": {

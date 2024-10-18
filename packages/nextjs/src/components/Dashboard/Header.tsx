@@ -2,11 +2,9 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
 
 export const DashboardHeader = () => {
   const { data: session } = useSession();
-  const router = useRouter();
 
   return (
     <header className="flex justify-between items-center p-4 bg-white border-b">
@@ -18,10 +16,11 @@ export const DashboardHeader = () => {
         </div>
         <button
           className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-          onClick={() => {
-            signOut();
-            router.push("/auth/login");
-          }}
+          onClick={() =>
+            signOut({
+              callbackUrl: "/auth/login",
+            })
+          }
         >
           登出
         </button>

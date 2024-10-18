@@ -4,6 +4,9 @@
   "main": "dist/db.js",
   "types": "dist/db.d.ts",
   "scripts": {
+    "docker-start": "docker-compose up",
+    "docker-stop": "docker-compose down",
+    "docker-clear": "rm -rf ./docker-data",
     "gene": "npx drizzle-kit generate:pg",
     "push": "npx drizzle-kit push:pg",
     "seed": "npx tsx ./src/seed/index.ts"

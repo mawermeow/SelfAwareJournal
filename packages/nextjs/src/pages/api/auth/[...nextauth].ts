@@ -3,6 +3,7 @@
 import NextAuth, { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import AppleProvider from "next-auth/providers/apple";
+import config from "@/config";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { logger, DrizzleAdapter, generateAppleClientSecret } from "@/lib";
@@ -23,11 +24,11 @@ export const authOptions: NextAuthOptions = {
   // 配置身份驗證提供者
   providers: [
     // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID!,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    //   clientId: config.google.clientId,
+    //   clientSecret: config.google.clientSecret,
     // }),
     // AppleProvider({
-    //   clientId: process.env.APPLE_CLIENT_ID!,
+    //   clientId: config.apple.clientId,
     //   clientSecret: generateAppleClientSecret(), // 使用生成的 clientSecret
     // }),
     // 可選：添加憑證提供者（如電子郵件/密碼）
@@ -117,8 +118,8 @@ export const authOptions: NextAuthOptions = {
     // strategy: "database", // 將 session 存儲在資料庫中，每次讀取時都要讀/寫資料庫
     strategy: "jwt", // 將 session 存儲在 JWT 中，每次讀取時只需解碼 JWT
   },
-  secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV === "development",
+  secret: config.nextAuth.secret,
+  debug: config.node.env === "development",
 };
 
 export default NextAuth(authOptions);

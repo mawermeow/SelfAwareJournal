@@ -1,8 +1,9 @@
 import initAdminUser from "./initAdminUser";
+import initPersonalityTests from "./initPersonalityTests";
 
 (async function seedMain() {
   // Seed data
-  const settled = await Promise.allSettled([initAdminUser()]);
+  const settled = await Promise.allSettled([initPersonalityTests()]);
 
   // Check if any seed data failed
   const rejects = settled
