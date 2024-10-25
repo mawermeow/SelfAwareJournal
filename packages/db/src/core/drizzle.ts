@@ -10,6 +10,12 @@ const pool = new Pool({
   user: config.db.user,
   password: config.db.password,
   database: config.db.database,
+  ssl: config.db.cert // AWS RDS 需要 ssl 才能連線
+    ? {
+        rejectUnauthorized: true,
+        ca: config.db.cert,
+      }
+    : false,
 });
 
 export const drizzleDB = drizzle(pool, { schema });

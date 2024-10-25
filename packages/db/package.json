@@ -8,7 +8,7 @@
     "docker-stop": "docker-compose down",
     "docker-clear": "rm -rf ./docker-data",
     "gene": "npx drizzle-kit generate:pg",
-    "push": "npx drizzle-kit push:pg",
+    "push": "NODE_TLS_REJECT_UNAUTHORIZED=0 npx drizzle-kit push:pg",
     "seed": "npx tsx ./src/seed/index.ts"
   },
   "dependencies": {
